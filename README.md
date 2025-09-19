@@ -42,7 +42,7 @@ The project is divided into four parts, each building on the previous one, and w
 - **Part 3 – [to be added]**  
 - **Part 4 – [to be added]**  
 
-## 🤖 AI Usage
+## AI Usage
 AI tools were used mainly for:  
 - Improving English writing in the README and project log  
 - Debugging code and solving errors  
