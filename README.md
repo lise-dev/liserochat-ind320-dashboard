@@ -36,7 +36,7 @@ The project is divided into four parts, each building on the previous one, and w
 - GitHub repository: [https://github.com/lise-dev/liserochat-ind320-dashboard.git](https://github.com/lise-dev/liserochat-ind320-dashboard.git)
 
 ## Project Parts
-- **Part 1 – Dashboard basics** : 06 october 2025
+- **Part 1 – Dashboard basics** ***06 october 2025*** : 
   Jupyter Notebook (CSV analysis & plots) and a minimal Streamlit app.  
 - **Part 2 – [to be added]**  
 - **Part 3 – [to be added]**  
