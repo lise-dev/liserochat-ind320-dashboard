@@ -30,6 +30,7 @@ The project is divided into four parts, each building on the previous one, and w
    ```bash
    streamlit run streamlit_app.py
    ```
+   
 ## Online Version
 - Streamlit app: [https://liserochat-ind320-dashboard.streamlit.app
 ](https://liserochat-ind320-dashboard.streamlit.app)  
