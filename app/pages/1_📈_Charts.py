@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 
-from app.utils.common import (
+from utils.common import (
     resolve_csv_path,
     load_time_indexed_data,
     list_distinct_month_strings_from_index,
