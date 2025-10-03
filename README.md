@@ -12,8 +12,6 @@ The project is divided into four parts, each building on the previous one, and w
 ## Repository Structure
 - `notebooks/` → Jupyter Notebooks (analysis, plots, documentation)  
 - `app/` → Streamlit app files  
-- `requirements.txt` → Dependencies for running the app  
-- `data/` → CSV or other data files used in the project  
 - `docs/` → Reports 
 
 ## How to Run Locally
