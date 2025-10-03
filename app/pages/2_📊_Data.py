@@ -2,11 +2,13 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 
-from utils.common import (
+from app.utils.common import (
     resolve_csv_path,
     load_time_indexed_data,
     list_distinct_month_strings_from_index,
     list_numeric_columns,
+    prettify_column_name,
+    make_unique,
 )
 
 st.set_page_config(page_title="Data", layout="wide")
