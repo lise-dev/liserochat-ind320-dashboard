@@ -26,6 +26,36 @@ def main():
     time_indexed_data = load_time_indexed_data(csv_file_path)
     st.caption(f"Rows: {time_indexed_data.shape[0]:,}  |  Columns: {time_indexed_data.shape[1]:,}")
 
+    # === Dataset overview ===
+    st.subheader("Dataset overview")
+
+    # Descriptive stats (numeric)
+    with st.expander("Descriptive statistics"):
+        desc = time_indexed_data.describe().T  # count, mean, std, min, quartiles, max
+        st.dataframe(desc, use_container_width=True)
+
+    # Coverage, months, shape
+    month_strings = time_indexed_data.index.to_period("M").astype(str)
+    time_min = time_indexed_data.index.min()
+    time_max = time_indexed_data.index.max()
+    n_months = len(pd.Index(month_strings).unique())
+
+    st.caption(
+        f"Time coverage: {time_min.strftime('%Y-%m-%d')} → {time_max.strftime('%Y-%m-%d')} "
+        f"| Distinct months: {n_months} "
+        f"| Rows: {time_indexed_data.shape[0]:,} "
+        f"| Columns: {time_indexed_data.shape[1]:,}"
+    )
+
+    # Missing values (only show if any)
+    na_counts = time_indexed_data.isna().sum()
+    if int(na_counts.sum()) > 0:
+        st.caption("Missing values per column:")
+        st.dataframe(na_counts[na_counts > 0].rename("Missing").to_frame(),
+                    use_container_width=True)
+    else:
+        st.caption("No missing values detected.")
+
     months = list_distinct_month_strings_from_index(time_indexed_data)
     if not months:
         st.warning("No valid months derived from the time index.")
