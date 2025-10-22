@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+import matplotlib.dates as mdates 
 
 # ---------------- PATH HELPERS ----------------
 def resolve_csv_path(project_root_directory: Path) -> Path:
@@ -140,7 +141,7 @@ def scale_numeric_frame(frame: pd.DataFrame, column_names: list[str], method: st
 
 
 # ------------- PLOTTING HELPERS --------------
-def plot_single_series_matplotlib(time_indexed_data: pd.DataFrame, column_name: str, figure_size=(9, 4)):
+def plot_single_series_matplotlib(time_indexed_data, column_name, figure_size=(9, 4)):
     """One line chart for a single column vs time."""
     fig, ax = plt.subplots(figsize=figure_size)
     ax.plot(time_indexed_data.index, time_indexed_data[column_name])
@@ -148,51 +149,53 @@ def plot_single_series_matplotlib(time_indexed_data: pd.DataFrame, column_name: 
     ax.set_xlabel("Time")
     ax.set_ylabel(column_name)
     ax.grid(True)
+    # --- new: month labels ---
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+    fig.autofmt_xdate()
     fig.tight_layout()
     return fig
 
+
 def plot_all_series_with_optional_secondary_axis(
-    time_indexed_data: pd.DataFrame,
-    primary_columns: list[str],
-    secondary_columns: list[str] | None = None,
-    ylabel_left: str = "Values",
-    ylabel_right: str = "Values",
+    time_indexed_data,
+    primary_columns,
+    secondary_columns=None,
+    ylabel_left="Values",
+    ylabel_right="Values",
     figure_size=(11, 6),
 ):
-    """
-    Plot all columns. If `secondary_columns` is given, those are drawn on a right Y-axis.
-    Useful to put wind direction (°) on the secondary axis.
-    """
     fig, ax_left = plt.subplots(figsize=figure_size)
     ax_right = None
 
-    # Left axis
     for c in primary_columns:
         ax_left.plot(time_indexed_data.index, time_indexed_data[c], label=c)
     ax_left.set_xlabel("Time")
     ax_left.set_ylabel(ylabel_left)
     ax_left.grid(True)
 
-    # Right axis (optional)
     if secondary_columns:
         ax_right = ax_left.twinx()
         for c in secondary_columns:
-            ax_right.plot(time_indexed_data.index, time_indexed_data[c], linestyle="--", label=c)
+            ax_right.plot(time_indexed_data.index, time_indexed_data[c],
+                          linestyle="--", label=c)
         ax_right.set_ylabel(ylabel_right)
 
-    # Combine legends
     h_left, l_left = ax_left.get_legend_handles_labels()
     if ax_right:
         h_right, l_right = ax_right.get_legend_handles_labels()
-        handles = h_left + h_right
-        labels = l_left + l_right
+        handles, labels = h_left + h_right, l_left + l_right
     else:
         handles, labels = h_left, l_left
-
     ax_left.legend(handles, labels, loc="best")
+
     title = "All numeric columns as a function of time"
     if secondary_columns:
         title += " (secondary axis used)"
     ax_left.set_title(title)
+    # --- new: month labels ---
+    ax_left.xaxis.set_major_locator(mdates.MonthLocator())
+    ax_left.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+    fig.autofmt_xdate()
     fig.tight_layout()
     return fig
