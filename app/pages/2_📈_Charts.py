@@ -1,5 +1,7 @@
 import streamlit as st
 from pathlib import Path
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 
 from utils.common import (
     resolve_csv_path,
@@ -9,7 +11,6 @@ from utils.common import (
     list_numeric_columns,
     build_pretty_name_mappings,
     plot_single_series_matplotlib,
-    plot_all_series_with_optional_secondary_axis,
 )
 
 st.set_page_config(page_title="Charts", layout="wide")
@@ -54,6 +55,7 @@ def main():
         f"|  Months: {start_month} → {end_month}"
     )
 
+    # --- Single column view ---
     if selected_pretty != "All columns":
         selected_original = pretty_to_orig[selected_pretty]
         fig = plot_single_series_matplotlib(filtered_data, selected_original)
@@ -62,7 +64,7 @@ def main():
         st.pyplot(fig, use_container_width=True)
         return
 
-    # Checkbox for secondary axis 
+    # --- All columns view (Plotly) ---
     use_secondary_axis = st.checkbox(
         "Secondary axis for wind direction (°)",
         value=True,
@@ -73,14 +75,33 @@ def main():
     secondary_cols = direction_cols if (use_secondary_axis and direction_cols) else None
     primary_cols = [c for c in numeric_cols if not (secondary_cols and c in secondary_cols)]
 
-    fig = plot_all_series_with_optional_secondary_axis(
-        filtered_data,
-        primary_columns=primary_cols,
-        secondary_columns=secondary_cols,
-        ylabel_left="Values",
-        ylabel_right="Values",
+    # Plotly chart
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Left (primary) Y-axis
+    for c in primary_cols:
+        fig.add_trace(
+            go.Scatter(x=filtered_data.index, y=filtered_data[c], name=c, mode="lines"),
+            secondary_y=False
+        )
+
+    # Right (secondary) Y-axis for wind direction
+    if secondary_cols:
+        for c in secondary_cols:
+            fig.add_trace(
+                go.Scatter(x=filtered_data.index, y=filtered_data[c], name=c, mode="lines", line=dict(dash="dash")),
+                secondary_y=True
+            )
+
+    fig.update_layout(
+        title="All numeric columns (toggle in legend)",
+        xaxis_title="Time",
+        yaxis_title="Values",
+        hovermode="x unified",
+        xaxis=dict(rangeslider=dict(visible=True))
     )
-    st.pyplot(fig, use_container_width=True)
+
+    st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
