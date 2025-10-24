@@ -3,3 +3,9 @@ pandas
 matplotlib
 numpy
 plotly
+pyspark
+pymongo
+requests
+python-dotenv
+pyspark
+cassandra-driver

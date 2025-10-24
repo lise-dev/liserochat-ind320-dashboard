@@ -37,7 +37,8 @@ The project is divided into four parts, each building on the previous one, and w
 ## Project Parts
 - **Part 1 – Dashboard basics** ***06 october 2025*** : 
   Jupyter Notebook (CSV analysis & plots) and a minimal Streamlit app.  
-- **Part 2 – [to be added]**  
+- **Part 2 – Data Sources and Integration** ***24 october 2025***:
+   Created new Elhub page (Part 2) with dynamic filters and two charts (pie chart + line chart)
 - **Part 3 – [to be added]**  
 - **Part 4 – [to be added]**  
 
