@@ -7,3 +7,5 @@ pyspark
 pymongo
 requests
 python-dotenv
+pyspark
+cassandra-driver
