@@ -37,10 +37,9 @@ def main():
     # ---------------- DATASET OVERVIEW ----------------
     st.subheader("Dataset overview")
 
-    # Expandable section showing descriptive statistics (numeric columns only)
-    with st.expander("Descriptive statistics"):
-        desc = time_indexed_data.describe().T  # count, mean, std, min, quartiles, max
-        st.dataframe(desc, use_container_width=True)
+    # Expandable section showing descriptive statistics 
+    desc = time_indexed_data.describe().T  # count, mean, std, min, quartiles, max
+    st.dataframe(desc, use_container_width=True)
 
     # Compute time coverage, number of months, and shape
     month_strings = time_indexed_data.index.to_period("M").astype(str)
@@ -64,8 +63,6 @@ def main():
             na_counts[na_counts > 0].rename("Missing").to_frame(),
             use_container_width=True
         )
-    else:
-        st.caption("No missing values detected.")
 
     # ---------------- FIRST MONTH SUBSET ----------------
     # Extract the first available month to build the summary table below
