@@ -201,7 +201,7 @@ with right_col:
 # -------------------------------------------------
 st.markdown("---")
 
-with st.expander("Where the data comes from / what the charts show"):
+with st.expander("What the charts show"):
     st.markdown(
         """
         **How this page works**  
